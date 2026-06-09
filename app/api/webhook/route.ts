@@ -25,6 +25,9 @@ export async function POST(req: NextRequest) {
 
     if (!useMock) {
       const client = getServiceClient()
+      if (!client) {
+        return NextResponse.json({ error: 'Supabase não configurado' }, { status: 503 })
+      }
       const { error } = await client.from('vendas').upsert({
         id: String(id),
         valor: Number(valor),
